@@ -10,6 +10,16 @@ var currency = {
     YEN: { data: [0.00906, 27.643, 0.0302, 0.00901, 0.032, 0.00620, 1, 0.0081], aval: Math.random() >= 0.5},
     EUR: { data: [1.112, 3409.66, 3.723, 1.106, 4.017, 0.76, 122.525, 1], aval: Math.random() >= 0.5}
 };
+const position = {
+    USD: 0,
+    COP: 1,
+    PEN: 2,
+    CHF: 3,
+    BRL: 4,
+    GBP: 5,
+    YEN: 6,
+    EUR: 7
+};
 
 console.log(currency);
 
@@ -18,9 +28,11 @@ var net = require('net');
 
 var server = net.createServer(function(socket) {
     socket.on('data', function (data) {
-        if (currency[data].aval) {
-            socket.write('true');
-            console.log(currency[data].data);
+        data = JSON.parse(data);
+        if (currency[data[0]].aval) {
+            var pos = position[data[1]];
+            var value = currency[data[0]].data[pos];
+            socket.write(value.toString());
         }
         else
             socket.write('false');

@@ -5,7 +5,10 @@ var net = require('net');
 var socket = new net.Socket();
 socket.connect(1337, '127.0.0.1', function() {
     console.log('Connected');
-    socket.write('COP');
+
+    // [from, to]
+    var data = ['COP', 'USD'];
+    socket.write(JSON.stringify(data));
 });
 
 socket.on('data', function(data) {
