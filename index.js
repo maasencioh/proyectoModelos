@@ -22,6 +22,7 @@ const position = {
     YEN: 6,
     EUR: 7
 };
+const PORT = 1337;
 
 console.log(currency);
 
@@ -45,12 +46,31 @@ server.on('error', function (err) {
     throw err;
 });
 
-server.listen(1337, '127.0.0.1');
+server.listen(PORT, '127.0.0.1');
+
+setInterval(function () {
+    for (var c in currency) {
+        // change every value in 1%
+        for (var i = 0; i < currency[c].data.length; i++) {
+            if (Math.random() >= 0.5)
+                currency[c].data[i] -= currency[c].data[i] * (Math.random() * 0.01);
+            else
+                currency[c].data[i] += currency[c].data[i] * (Math.random() * 0.01);
+        }
+    }
+    
+    // change a single availability
+    var currList = Object.keys(position);
+    var pos = Math.floor(Math.random() * currList.length);
+    currency[currList[pos]].aval = !currency[currList[pos]].aval;
+    
+    console.log(currency);
+}, 10000);
 
 
 // -------- client -----------
 var socket = new net.Socket();
-socket.connect(1337, '127.0.0.1', function() {
+socket.connect(PORT, '127.0.0.1', function() {
     console.log('Connected');
 
     // [from, to]
