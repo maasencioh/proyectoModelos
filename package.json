@@ -1,0 +1,8 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "proyecto final modelos estocasticos",
+  "main": "index.js",
+  "author": "todos",
+  "license": "MIT"
+}
